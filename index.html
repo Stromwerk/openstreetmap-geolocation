@@ -6,36 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Geolocation test</title>
-    <style>
-        #map-embed {
-            display: none;
-        }
-    </style>
 </head>
 
 <body>
     <button id="find-me">Show my location</button><br />
     <p id="status"></p>
-    <iframe id="map-embed" width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-        src="https://www.openstreetmap.org/export/embed.html?bbox=0%2C0%2C0%2C0&amp;layer=mapnik&amp;marker=0%2C0"
-        style="border: 1px solid black"></iframe>
 
     <script>
         function geoFindMe() {
 
             const status = document.querySelector('#status');
-            const mapEmbed = document.querySelector('#map-embed');
 
             function success(position) {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
                 const bbox = `${longitude}%2C${latitude}%2C${longitude}$2C${latitude}`;
                 const marker = `${latitude}%2C${longitude}`;
+                const newIframe = document.createElement('iframe');
 
-                mapEmbed.src = mapEmbed.src.replace(mapEmbed.src.match(/bbox=(.+)&/)[1], bbox);
-                mapEmbed.src = mapEmbed.src.replace(mapEmbed.src.match(/marker=(.+)/)[1], marker);
-                mapEmbed.style.display = "block";
-
+                newIframe.frameBorder = 0;
+                newIframe.width = 425;
+                newIframe.height = 350;
+                newIframe.scrolling = 'no';
+                newIframe.marginHeight = 0;
+                newIframe.marginWidth = 0;
+                newIframe.style = "border: 1px solid black; margin-top: 10px;";
+                newIframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${marker}`;
+                document.body.insertBefore(newIframe, status);
                 status.textContent = '';
             }
 
