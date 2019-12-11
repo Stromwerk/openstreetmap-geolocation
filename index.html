@@ -16,23 +16,30 @@
         function geoFindMe() {
 
             const status = document.querySelector('#status');
+            const mapFrame = document.querySelector('#map-frame');
 
             function success(position) {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
                 const bbox = `${longitude}%2C${latitude}%2C${longitude}$2C${latitude}`;
                 const marker = `${latitude}%2C${longitude}`;
-                const newIframe = document.createElement('iframe');
+                
+                if (mapFrame) {
+                    mapFrame.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${marker}`;
+                } else {
+                    const newIframe = document.createElement('iframe');
 
-                newIframe.frameBorder = 0;
-                newIframe.width = 425;
-                newIframe.height = 350;
-                newIframe.scrolling = 'no';
-                newIframe.marginHeight = 0;
-                newIframe.marginWidth = 0;
-                newIframe.style = "border: 1px solid black; margin-top: 10px;";
-                newIframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${marker}`;
-                document.body.insertBefore(newIframe, status);
+                    newIframe.id = 'map-frame';
+                    newIframe.frameBorder = 0;
+                    newIframe.width = 425;
+                    newIframe.height = 350;
+                    newIframe.scrolling = 'no';
+                    newIframe.marginHeight = 0;
+                    newIframe.marginWidth = 0;
+                    newIframe.style = "border: 1px solid black; margin-top: 10px;";
+                    newIframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${marker}`;
+                    document.body.insertBefore(newIframe, status);
+                }
                 status.textContent = '';
             }
 
